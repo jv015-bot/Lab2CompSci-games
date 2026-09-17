@@ -100,13 +100,13 @@ public class Main {
             int dsum = d1 + d2 + d3;
             System.out.println("You rolled a " + d1 + " and a " + d2 + " and a " + d3 + " for a total of " + dsum + "\n");
 
-            if ((dsum == 9 || dsum == 10 || dsum == 14) || (d1 == 8 && d2 != 8 && d3 != 8) || (d1 != 8 && d2 == 8 && d3 != 8) || (d1 != 8 && d2 != 8 && d3 == 8) ) {
+            if (dsum == 9 || dsum == 10 || dsum == 14) || (d1 == 8|| d2 == 8 || d3 == 8) ) {
                 System.out.println("Congratulations! You win!\n");
                 bet *= 2; // Double the bet after winning
                 networth += bet; // Update net worth with the final bet amount
                 bet = 0; // Reset bet after winning
                 System.out.println("Your bet is now $" + bet + ". and your net worth is now $" + networth + ".\n");
-            } else if ((dsum == 8 || dsum == 20 || dsum == 23 || dsum == 24) || (d1 == 1 && d2 != 1 && d3 != 1) || (d1 != 1 && d2 == 1 && d3 != 1) || (d1 != 1 && d2 != 1 && d3 == 1) ) {
+            } else if ((dsum == 8 || dsum == 20 || dsum == 23 || dsum == 24) || (d1 == 1 || d2 == 1 || d3 == 1) ) {
                 System.out.println("Sorry, you lose.\n");
                 networth -= bet; // Update net worth with the final bet amount
                 bet = 0; // Reset bet after losing
@@ -133,7 +133,7 @@ public class Main {
                         networth += bet; // Update net worth with the final bet amount
                         System.out.println("Your net worth is now $" + networth + ".\n");
                         keepRolling = false;
-                    } else if ((nextDsum == 15) || (nextD1 == 8 && nextD2 != 8 && nextD3 != 8) || (nextD1 != 8 && nextD2 == 8 && nextD3 != 8) || (nextD1 != 8 && nextD2 != 8 && nextD3 == 8) ) {
+                    } else if ((nextDsum == 15) || (nextD1 == 8 || nextD2 == 8 || nextD3 == 8) ) {
                         System.out.println("Sorry, you rolled a 15 or a single '8' and lose.\n");
                         networth -= bet; // Update net worth with the final bet amount
                         bet = 0; // Reset bet after losing
