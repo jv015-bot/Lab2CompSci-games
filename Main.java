@@ -1,5 +1,3 @@
-
-
 import java.util.Scanner;
 
 public class Main {
@@ -14,7 +12,7 @@ public class Main {
             System.out.println("C - Craps\n");
             System.out.println("R - Rock Paper Scissors\n");
             System.out.println("E - Rock Paper Scissors Spock (Out of service)\n");
-            System.out.println("B - Blackjack (Out of service)\n");
+            System.out.println("B - Blackjack\n");
             System.out.println("H - Hangman (Out of service)\n");
             System.out.println("Q - Quit\n");
 
@@ -100,7 +98,7 @@ public class Main {
             int dsum = d1 + d2 + d3;
             System.out.println("You rolled a " + d1 + " and a " + d2 + " and a " + d3 + " for a total of " + dsum + "\n");
 
-            if (dsum == 9 || dsum == 10 || dsum == 14) || (d1 == 8|| d2 == 8 || d3 == 8) ) {
+            if ((dsum == 9 || dsum == 10 || dsum == 14) || (d1 == 8|| d2 == 8 || d3 == 8) ) {
                 System.out.println("Congratulations! You win!\n");
                 bet *= 2; // Double the bet after winning
                 networth += bet; // Update net worth with the final bet amount
@@ -203,9 +201,131 @@ public class Main {
     }
 
     static void playBlackjack() {
-        // Implementation of the Blackjack game
         System.out.println("WELCOME TO BLACKJACK!!\n");
-    }
+        while (!userInput.equals("N")) {
+            String[] suits = {"Hearts", "Diamonds", "Clubs", "Spades"};
+            String[] card = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King", "Ace"};
+
+            // Create a deck. Each number represents one card.
+            int[] deck = new int[52];
+            for (int i = 0; i < 52; i++) {
+                deck[i] = i;
+            }
+
+            // Shuffle the deck.
+            for (int i = 51; i > 0; i--) {
+                int j = (int) (Math.random() * (i + 1));
+                int temp = deck[i];
+                deck[i] = deck[j];
+                deck[j] = temp;
+            }
+
+            String[] playerHand = new String[52];
+            String[] computerHand = new String[52];
+            int playerCards = 0;
+            int computerCards = 0;
+            int playerValue = 0;
+            int computerValue = 0;
+            int playerAces = 0;
+            int computerAces = 0;
+
+            // Deal two cards to each hand, alternating between the player and dealer.
+            int nextCard = 0;
+            for (int i = 0; i < 4; i++) {
+                int cardIndex = deck[nextCard++];
+                int rank = cardIndex % 13;
+                int suit = cardIndex / 13;
+                int value = rank < 9 ? rank + 2 : (rank < 12 ? 10 : 11);
+                String dealtCard = card[rank] + " of " + suits[suit];
+
+                if (i % 2 == 1) {
+                    computerHand[computerCards++] = dealtCard;
+                    computerValue += value;
+                    if (rank == 12) {
+                        computerAces++;
+                    }
+                } else {
+                    playerHand[playerCards++] = dealtCard;
+                    playerValue += value;
+                    if (rank == 12) {
+                        playerAces++;
+                    }
+                }
+            }
+
+            System.out.println("The computer's first card is " + computerHand[0] + ".");
+
+            boolean playing = true;
+            while (playing && playerValue <= 21) {
+                System.out.println("Your cards: " + playerHand[0] + " and " + playerHand[1]
+                        + ". Total: " + playerValue + ".");
+                    if (playerValue == 21) {
+                        System.out.println("You have a total of 21! You win!\n");
+                    return;
+                    }
+                
+                System.out.println("Would you like to hit or stand? (Y/N)\n");
+                String choice = scanner.nextLine().trim().toUpperCase();
+
+                if (choice.equals("Y") || choice.equals("YES")) {
+                    int cardIndex = deck[nextCard++];
+                    int rank = cardIndex % 13;
+                    int suit = cardIndex / 13;
+                    int value = rank < 9 ? rank + 2 : (rank < 12 ? 10 : 11);
+                    playerHand[playerCards++] = card[rank] + " of " + suits[suit];
+                    playerValue += value;
+                    if (rank == 12) {
+                        playerAces++;
+                    }
+                    while (playerValue > 21 && playerAces > 0) {
+                        playerValue -= 10;
+                        playerAces--;
+                    }
+                    System.out.println("You received " + playerHand[playerCards - 1] + ". Total: " + playerValue);
+                } else if (choice.equals("N") || choice.equals("NO")) {
+                    playing = false;
+                } else {
+                    System.out.println("Invalid selection. Please choose Y or N.");
+                }
+            }
+
+            if (playerValue > 21) {
+                System.out.println("You busted with a total of " + playerValue + ". The computer wins.\n");
+                return;
+            }
+
+            System.out.println("The computer's cards are " + computerHand[0] + " and " + computerHand[1]
+                + ". Total: " + computerValue);
+            while (computerValue <= 17) {
+                int cardIndex = deck[nextCard++];
+                int rank = cardIndex % 13;
+                int suit = cardIndex / 13;
+                int value = rank < 9 ? rank + 2 : (rank < 12 ? 10 : 11);
+                computerValue += value;
+                computerCards++;
+                if (rank == 12) {
+                    computerAces++;
+                }
+                while (computerValue > 21 && computerAces > 0) {
+                    computerValue -= 10;
+                    computerAces--;
+                }
+                computerHand[computerCards++] = card[rank] + " of " + suits[suit];
+                System.out.println("The computer drew " + computerHand[computerCards - 1] + ". Total: " + computerValue);
+            }
+
+            System.out.println("Your total: " + playerValue + ". Computer total: " + computerValue + ".");
+            if (computerValue > 21 || playerValue > computerValue) {
+                System.out.println("Congratulations! You win!\n");
+            } else if (playerValue == computerValue) {
+                System.out.println("It's a push!\n");
+            } else {
+                System.out.println("The computer wins.\n");
+            }
+    
+        System.out.println("Would you like to play again? (Y/N)\n");
+        userInput = scanner.nextLine().toUpperCase();}
+        }
 
     static void playHangman() {
         // Implementation of the Hangman game
